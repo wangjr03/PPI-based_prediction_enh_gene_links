@@ -1,5 +1,5 @@
 Summary:
-This package builds models based on the chromatin interaction data and ChIP-seq binding files, and predicts the probability of interaction between a new input promoter-enhancer pairs.
+This package builds models based on the chromatin interaction data and ChIP-seq binding files, and predicts the probability of interaction between new input promoter-enhancer pairs.
 
 
 

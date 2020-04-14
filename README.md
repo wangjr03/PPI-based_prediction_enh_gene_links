@@ -27,7 +27,7 @@ Files:
 
 
 
-General Usage:
+Usage:
    1: generate_promoter_list.py
            -c: the cell type name
            -f: define the promoter flanking region, +/- flanking_region is considered as the promoter region

@@ -13,6 +13,8 @@ The implementation of the ProTECT is based on `Python 3.6` and `R 3.5.1`. It dep
 ## Input data: resources and formats
 The ProTECT takes 8 sets of data as inputs: (1) significant experimental chromatin interactions, (2) contact domain annotations, (3) enhancer annotations, (4) gene annotations, (5) the enhancer activity profiles, (6) the gene activity profiles, (7) TF ChIP-seq peaks and (8) protein-protein interaction (PPI) datasets. For the convenience of the user,  enhancer annotations, gene annotations, the enhancer activity profiles and the gene activity profiles are pre-calculated and provided. Descriptions of the three required user-provided data are listed below:
 Significant experimental chromatin interactions: The significant experimental chromatin interactions can be provided by Hi-C , ChIA-PET  and Capture C . The chromatin interactions should be in tab separated file with five columns:
+
+
 	| col | abbrv. | type | description |
 	| --- | --- | --- | --- |
 	| 1 | chr | string | Name of the chromosome |
@@ -21,6 +23,8 @@ Significant experimental chromatin interactions: The significant experimental ch
 	| 4 | frag2.start | int | Fragment 2 start |
 	| 5 | frag2.end | int |Fragment 2 end |
 2. Contact domain annotation: The contact domains represent densely self-interacting genome regions. The contact domain can be detected by applying computational models, e.g. Arrowhead , on chromatin contact maps. For example, contact domains based on Hi-C contact maps can be downloaded from GEO with GSE63525 . The contact domain annotations should be tab-separated, with three columns:
+
+
 	| col | abbrv. | type | description |
 	| --- | --- | --- | --- |
 	| 1 | chr | string | Name of the chromosome |
@@ -36,6 +40,8 @@ The format of the TF ChIP-seq narrow peak files follows the standard definition 
 ## Pre-calculated data
 For users’ convenience, four sets of data have been pre-calculated. The user could also use their own datasets by replacing those files.
 1. Gene annotations: The gene annotation with GENCODE V17 has been integrated with the program. The promoter is defined as the +/- 1kb around the transcriptional start sites (TSS). The Gene annotations should be in the following format.
+
+
 	| col | abbrv. | type | description |
 	| --- | --- | --- | --- |
 	| 1 | ensg.id | char | Ensembl gene id |
@@ -66,6 +72,8 @@ The ProTECT software consists of 6 sequential scripts. A detailed description of
 3. Discover_PPI_module.R: This step is used to detect a two -layer hierarchical PPI networks.
 	**Inputs**: It takes the PPI data as inputs.
 	**Outputs**: Membership of the TFs to the hierarchical PPI module.
+	
+	
 	| col | abbrv. | type | description |
 	| --- | --- | --- | --- |
 	| 1 | TF_name | string | Name of the TF |

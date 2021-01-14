@@ -15,13 +15,14 @@ The ProTECT takes 8 sets of data as inputs: (1) significant experimental chromat
 Significant experimental chromatin interactions: The significant experimental chromatin interactions can be provided by Hi-C , ChIA-PET  and Capture C . The chromatin interactions should be in tab separated file with five columns:
 
 
-	| col | abbrv. | type | description |
+	| col | abbrv. | type | description 
 	| --- | --- | --- | --- |
-	| 1 | chr | string | Name of the chromosome |
-	| 2 | frag1.start | int | Fragment 1 start |
+	| 1 | chr | string | Name of the chromosome 
+	| 2 | frag1.start | int | Fragment 1 start 
 	| 3 | frag1.enh | int | Fragment 1 enh |
-	| 4 | frag2.start | int | Fragment 2 start |
-	| 5 | frag2.end | int |Fragment 2 end |
+	| 4 | frag2.start | int | Fragment 2 start 
+	| 5 | frag2.end | int |Fragment 2 end 
+	
 2. Contact domain annotation: The contact domains represent densely self-interacting genome regions. The contact domain can be detected by applying computational models, e.g. Arrowhead , on chromatin contact maps. For example, contact domains based on Hi-C contact maps can be downloaded from GEO with GSE63525 . The contact domain annotations should be tab-separated, with three columns:
 
 

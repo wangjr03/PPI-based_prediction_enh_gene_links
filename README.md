@@ -26,11 +26,11 @@ Significant experimental chromatin interactions: The significant experimental ch
 2. Contact domain annotation: The contact domains represent densely self-interacting genome regions. The contact domain can be detected by applying computational models, e.g. Arrowhead , on chromatin contact maps. For example, contact domains based on Hi-C contact maps can be downloaded from GEO with GSE63525 . The contact domain annotations should be tab-separated, with three columns:
 
 
-	| col | abbrv. | type | description |
+	| col | abbrv. | type | description 
 	| --- | --- | --- | --- |
-	| 1 | chr | string | Name of the chromosome |
-	| 2 | domain.start | int | Contact domain start |
-	| 3 | domain.end | int | Contact domain end |
+	| 1 | chr | string | Name of the chromosome 
+	| 2 | domain.start | int | Contact domain start 
+	| 3 | domain.end | int | Contact domain end 
 
 3. TF ChIP-seq peaks: The narrow peak files of TF ChIP-seq can be downloaded from the ENCODE consortia. As the quality control, we applied three criterions to filter the TF ChIP-seq narrow peak files. The TF ChIP-seq narrow peak files with the best quality are selected for each TF using the following three criteria:
 	a. TF ChIP-seq peak files for treated transcription factors are removed.

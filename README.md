@@ -61,10 +61,10 @@ For users’ convenience, four sets of data have been pre-calculated. The user c
 
 ## Description of scripts: command lines
 The ProTECT software consists of 6 sequential scripts. A detailed description of each piece is provided.
-1. Training_sample_generation.R: This step is used to generate positive training sets and a balanced negative training set with multiple confounding factors controlled.
-	### Inputs: It takes significant experimental chromatin interactions, contact domain annotations as inputs. 
-	### Outputs: a list of enhancer-promoter interactions and their labels, i.e. 1 for positive sets and -1 for negative sets.
-	### Command line usage: Rscript Training_sample_generation.R `<path to significant chromatin interactions>` `<path to contact domain annotations>`
+1. Training_sample_generation.R: This step is used to generate positive training sets and a balanced negative training set with multiple confounding factors controlled.<br>
+	**Inputs**: It takes significant experimental chromatin interactions, contact domain annotations as inputs. <br>
+	**Outputs**: a list of enhancer-promoter interactions and their labels, i.e. 1 for positive sets and -1 for negative sets.<br>
+	**Command line usage**: Rscript Training_sample_generation.R `<path to significant chromatin interactions>` `<path to contact domain annotations>`
 2. Generate_ProTECT_feature.py: This step is used to generate features used by ProTECT, including enhancer activities, gene expressions, enhancer-promoter activity correlations, genomic distances and PPI features.
 	### Inputs: It takes TF ChIP-seq narrow peak files as inputs.
 	### Outputs: a feature matrix, where each row is one enhancer-promoter interaction and each column is one feature.

@@ -13,8 +13,9 @@ The implementation of the ProTECT is based on `Python 3.6` and `R 3.5.1`. It dep
 ## Input data: resources and formats
 The ProTECT takes 8 sets of data as inputs: (1) significant experimental chromatin interactions, (2) contact domain annotations, (3) enhancer annotations, (4) gene annotations, (5) the enhancer activity profiles, (6) the gene activity profiles, (7) TF ChIP-seq peaks and (8) protein-protein interaction (PPI) datasets. For the convenience of the user,  enhancer annotations, gene annotations, the enhancer activity profiles and the gene activity profiles are pre-calculated and provided. Descriptions of the three required user-provided data are listed below:
 Significant experimental chromatin interactions: The significant experimental chromatin interactions can be provided by Hi-C , ChIA-PET  and Capture C . The chromatin interactions should be in tab separated file with five columns:
+
 	| col | abbrv. | type | description 
-	| --- | --- | --- | --- |
+	| --- | --- | --- | --- 
 	| 1 | chr | string | Name of the chromosome 
 	| 2 | frag1.start | int | Fragment 1 start 
 	| 3 | frag1.enh | int | Fragment 1 enh |

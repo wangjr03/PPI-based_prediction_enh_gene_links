@@ -1,7 +1,7 @@
 # ProTECT
 Predict long-range enhancer-promoter intearctions based on PPIs.
 ## Summary
-We developed ProTECT (i.e. PROtein-protein interactions of Transcription factors predicting Enhancer Contacts with Target genes) to predict long-range enhancer-promoter interactions using TF PPI as features. A robust random forest model is trained based on significant experimental chromatin interactions,i.e. Hi-C, and applied to the whole genome-wide to make highly confident predictions. <\p>
+We developed ProTECT (i.e. PROtein-protein interactions of Transcription factors predicting Enhancer Contacts with Target genes) to predict long-range enhancer-promoter interactions using TF PPI as features. A robust random forest model is trained based on significant experimental chromatin interactions,i.e. Hi-C, and applied to the whole genome-wide to make highly confident predictions.
 
 ## Introduction
 The ProTECT algorithm takes multi-omics data as inputs, including the enhancer activities, gene activities, TF Chip-seq narrow peaks and PPIs, to train a random forest model. Novel community detection-based feature dimension reduction and feature selection methods are applied to reduce the number of features and improve the robustness and accuracy of the ProTECT. In the meanwhile, we evaluate the accuracy of the ProTECT with a rigorous genomic-bin split cross-validation method to control the confounding factors. By applying the ProTECT algorithm on the potential enhancer-promoter interactions in the whole genome-wide, a set of highly confident enhancer-promoter interactions is prioritized and used for the downstream analysis.

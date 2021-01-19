@@ -66,7 +66,7 @@ The ProTECT software consists of 6 sequential scripts. A detailed description of
 	**Outputs**: a list of enhancer-promoter interactions and their labels, i.e. 1 for positive sets and -1 for negative sets.<br>
 	**Command line usage**: Rscript Training_sample_generation.R `<path to significant chromatin interactions>` `<path to contact domain annotations>`
 2. Generate_ProTECT_feature.py: This step is used to generate features used by ProTECT, including enhancer activities, gene expressions, enhancer-promoter activity correlations, genomic distances and PPI features. <br>
-	**Inputs**: It takes TF ChIP-seq narrow peak files as inputs.
+	**Inputs**: It takes TF ChIP-seq narrow peak files as inputs.<br>
 	**Outputs**: a feature matrix, where each row is one enhancer-promoter interaction and each column is one feature. <br>
 	**Command line usage**: python Generate_ProTECT_feature.py -i `<path to the training samples>` -c `<column index of the cell line in the gene/enhancer activity matrix, i.e. 53 for the GM12878 cell line>` -d `(indicates the genomic distance is reported)` -s `<path to the PPI file>`
 

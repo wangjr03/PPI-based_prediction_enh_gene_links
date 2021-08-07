@@ -55,7 +55,7 @@ For users’ convenience, four sets of data have been pre-calculated. The user c
 	| 8 | HGNC description | string | Description of the gene based on the HGNC annotation |
 	
 	
-2. Enhancer activity matrix: The enhancer activities are quantified by cell-type specific genome-wide coverage epigenomic datasets, i.e. histone modifications, DNase-seq and ATAC-seq. The cell-type specific enhancer activities are summarized into a matrix, where rows present enhancers, and columns represent cell-types.
+2. Enhancer activity matrix: The enhancer activities are quantified by cell-type specific genome-wide coverage epigenomic datasets, i.e. histone modifications, DNase-seq and ATAC-seq. The cell-type specific enhancer activities are summarized into a matrix, where rows represent enhancers, and columns represent cell-types.
 3. Gene expression matrix: The gene expressions are quantified by RNA-seq data, i.e. RPKM. The cell-type specific gene expressions are summarized into a matrix, where rows present genes, and columns represent cell-types.
 4. Protein-protein interaction (PPI) datasets: PPI datasets can be downloaded from STRING database. To remove the low-quality PPIs, we only used the PPIs with a confidence score greater than 100 in the ‘Experiments’ category. This threshold removes around 50% of the PPIs. A filtered PPI dataset based on STRING V11 has been integrated into the program.
 

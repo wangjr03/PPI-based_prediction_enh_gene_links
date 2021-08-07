@@ -23,7 +23,7 @@ The ProTECT takes 8 sets of data as inputs: (1) significant experimental chromat
 	| 5 | frag2.end | int |Fragment 2 end |
 
 	
-2. Contact domain annotation: The contact domains represent densely self-interacting genome regions. The contact domain can be detected by applying computational models, e.g. Arrowhead , on chromatin contact maps. For example, contact domains based on Hi-C contact maps can be downloaded from GEO with GSE63525 . The contact domain annotations should be tab-separated, with three columns:
+2. Contact domain annotation: The contact domains represent densely self-interacting genome regions. The contact domain can be detected by applying computational models, e.g. Arrowhead, on chromatin contact maps. For example, contact domains based on Hi-C contact maps can be downloaded from GEO with GSE63525. The contact domain annotations should be tab-separated, with three columns:
 
 
 	| col | abbrv. | type | description 
@@ -40,7 +40,7 @@ The format of the TF ChIP-seq narrow peak files follows the standard definition 
 
 ## Pre-calculated data
 For users’ convenience, four sets of data have been pre-calculated. The user could also use their own datasets by replacing those files.
-1. Gene annotations: The gene annotation with GENCODE V17 has been integrated with the program. The promoter is defined as the +/- 1kb around the transcriptional start sites (TSS). The Gene annotations should be in the following format.
+1. Gene annotations: The gene annotation with GENCODE V17 has been integrated with the program. The promoter is defined as the +/- 1kb around the transcriptional start sites (TSS). The gene annotations should be in the following format.
 
 
 	| col | abbrv. | type | description |
@@ -56,8 +56,8 @@ For users’ convenience, four sets of data have been pre-calculated. The user c
 	
 	
 2. Enhancer activity matrix: The enhancer activities are quantified by cell-type specific genome-wide coverage epigenomic datasets, i.e. histone modifications, DNase-seq and ATAC-seq. The cell-type specific enhancer activities are summarized into a matrix, where rows represent enhancers, and columns represent cell-types.
-3. Gene expression matrix: The gene expressions are quantified by RNA-seq data, i.e. RPKM. The cell-type specific gene expressions are summarized into a matrix, where rows present genes, and columns represent cell-types.
-4. Protein-protein interaction (PPI) datasets: PPI datasets can be downloaded from STRING database. To remove the low-quality PPIs, we only used the PPIs with a confidence score greater than 100 in the ‘Experiments’ category. This threshold removes around 50% of the PPIs. A filtered PPI dataset based on STRING V11 has been integrated into the program.
+3. Gene expression matrix: The gene expressions are quantified by RNA-seq data, i.e. RPKM. The cell-type specific gene expressions are summarized into a matrix, where rows represent genes, and columns represent cell-types.
+4. Protein-protein interaction (PPI) datasets: PPI datasets can be downloaded from STRING database. To remove the low-quality PPIs, we only use the PPIs with a confidence score greater than 100 in the ‘Experiments’ category. This threshold removes around 50% of the PPIs. A filtered PPI dataset based on STRING V11 has been integrated into the program.
 
 ## Description of scripts: command lines
 The ProTECT software consists of 6 sequential scripts. A detailed description of each piece is provided.
@@ -71,7 +71,7 @@ The ProTECT software consists of 6 sequential scripts. A detailed description of
 	**Command line usage**: python Generate_ProTECT_feature.py -i `<path to the training samples>` -c `<column index of the cell line in the gene/enhancer activity matrix, i.e. 53 for the GM12878 cell line>` -d `(indicates the genomic distance is reported)` -s `<path to the PPI file>`
 
 3. Discover_PPI_module.R: This step is used to detect a two-layer hierarchical PPI networks.<br>
-	**Inputs**: It takes the PPI data as inputs.<br>
+	**Inputs**: It takes the PPI data as the input.<br>
 	**Outputs**: Membership of the TFs to the hierarchical PPI module.<br>
 	
 	

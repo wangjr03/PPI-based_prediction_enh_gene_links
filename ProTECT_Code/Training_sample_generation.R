@@ -10,9 +10,9 @@ domain_path <- args[2]
 train_pairs_out <- args[3] # output path of the processed training pairs
 ct <- as.numeric(args[4])
 
-enh_path = "../data/enhancer_coords_select.bed" # path to the enhancer coordinates
-gene_act_mat_path = "../data/RPKM_all_gene_56epigenomes_simple_select_2.bed" # path to gene activity matrix
-gene_name_path = "../data/RPKM_all_gene_name_select_2.bed" # path to the gene names
+enh_path = "../data/enhancer_coords.bed" # path to the enhancer coordinates
+gene_act_mat_path = "../data/RPKM_gene_exp_mat.bed" # path to gene activity matrix
+gene_name_path = "../data/RPKM_gene_name.bed" # path to the gene names
 gene_annotation_path = "../data/Gene_annotation.bed" # path to the gene annotation files
 
 enhancer <- read.table(enh_path)

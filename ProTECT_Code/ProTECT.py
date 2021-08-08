@@ -1,7 +1,7 @@
 
-# coding: utf-8
 
-# In[3]:
+
+
 
 import argparse
 import pandas as pd
@@ -23,6 +23,7 @@ import pandas as pd
 from scipy.stats import pearsonr
 import re
 import random
+from sklearn.feature_selection import RFECV
 
 def Parser():
    parser=argparse.ArgumentParser('')
@@ -47,7 +48,7 @@ labels = list(labels[1])
 TF_name = all_TF_name
 print('Got datasets')
 
-# In[ ]:
+
 
 
 #get clusters of TFs
@@ -119,7 +120,7 @@ for i in TF_name:
         
 
 
-# In[ ]:
+
 
 
 #modify features: cluster TFs based on clusters
@@ -259,8 +260,8 @@ data_split = 30
 
 
 
-# pos_pair = pd.read_csv("/mnt/ufs18/rs-027/compbio/wanglab/haowang/Proj6_3_layer_net/Targetfinder/targetfinder/ProTECT_GM/finalized/cross_domain_removed_pos_PPI0.txt",sep="\t",usecols = [0,1,2,3,4],header=None)
-# neg_pair = pd.read_csv("/mnt/ufs18/rs-027/compbio/wanglab/haowang/Proj6_3_layer_net/Targetfinder/targetfinder/ProTECT_GM/finalized/cross_domain_removed_neg_PPI0.txt",sep="\t",usecols = [0,1,2,3,4],header=None)
+
+
 
 pos_pair= pd.read_csv(args.p,sep="\t",usecols = [0,1,2,3,4],header=None)
 neg_pair = pd.read_csv(args.n,sep="\t",usecols = [0,1,2,3,4],header=None)
@@ -359,7 +360,7 @@ def get_test_set(count_dic,enh_idx,all_enh_list,frac):
     
 
 
-# In[ ]:
+
 
 
 #this part will discover which feature to merge, according to out of bag accuracy and model complexity
@@ -431,9 +432,6 @@ for i in new_feature_mat.columns[0:len(new_feature_mat.columns)-4]:
         
         
 feature_list = new_feature_mat
-
-#label_list = pd.read_csv("/mnt/ufs18/rs-027/compbio/wanglab/haowang/Proj6_3_layer_net/Targetfinder/targetfinder/label_list.csv")
-#label_list = pd.read_csv("/mnt/ufs18/rs-027/compbio/wanglab/haowang/Proj6_3_layer_net/Targetfinder/targetfinder/ProTECT_K562/Updated_data/label_list.csv")
 label_list = pd.read_csv(args.l)
 label_list = label_list.drop('Unnamed: 0',axis=1)
         
@@ -460,32 +458,6 @@ for i in rf_dic:
             #init_aic = aic
         
         
-# optional, for backward feature selection
-#import numpy as np
-#from irf import irf_utils
-#from irf.ensemble import RandomForestClassifierWithWeights
-
-#all_rf_weights, all_K_iter_rf_data,     all_rf_bootstrap_output, all_rit_bootstrap_output,     stability_score = irf_utils.run_iRF(X_train=x[train],
-#                                        X_test=x[test],
-#                                        y_train=(y[train]>0)*1,
-#                                        y_test=(y[test]>0)*1,
-#                                        K=10,                          # number of iteration
-#                                        rf = RandomForestClassifierWithWeights(n_estimators=80),
-#                                        B=30,
-#                                        random_state_classifier=2018, # random seed
-#                                        propn_n_samples=.2,
-#                                        bin_class_type=1,
-#                                        M=20,
-#                                        max_depth=5,
-#                                        noisy_split=False,
-#                                        num_splits=2,
-#                                        n_estimators_bootstrap=5)
-
-
-# cross validation
-
-from sklearn.feature_selection import RFECV
-
 
 test_list = []
 train_list = []
@@ -519,20 +491,7 @@ all_tpr = []
 all_fpr = []
 all_score = []
 all_test_id=[]
-for i in range(len(test_list)):
-    #test_enh = get_test_set(count_dic,enh_idx,all_enh_list,0.2)
-    #test_enh = [f for f in range(len(enh_idx)) if enh_idx[f] in test_enh]
-    #test_enh = np.array(u_enh_list.iloc[test_enh,:])
-    #test_enh = [tuple(f) for f in test_enh]
-    #train, test = [],[]
-    #all_pair = pd.concat([pos_pair,neg_pair])
-    #for i in range(all_pair.shape[0]):
-    #    if tuple(all_pair.iloc[i,0:3]) in test_enh:
-    #        test.append(i)
-    #    else:
-    #        train.append(i)      
-    #train = [train[i] for i in list(np.where(feature_list.iloc[train,4281]>0)[0])]
-    #test = [test[i] for i in list(np.where(feature_list.iloc[test,4281]>0)[0])]    
+for i in range(len(test_list)):  
     clf = RandomForestClassifier(n_estimators=80)
     mean_fpr = np.linspace(0,1,100)
     x, y  = np.array(feature_list), np.array(label_list)        
@@ -542,13 +501,9 @@ for i in range(len(test_list)):
     tprs.append(interp(mean_fpr, fpr, tpr))
     all_score.extend(prediction[:,1])
     all_test_id.extend(test_list[i])
-    #all_tpr.append(tpr)
-    #all_fpr.append(fpr)
     roc_auc = auc(fpr, tpr) 
     aucs.append(roc_auc)
     importance.append(clf.feature_importances_)
-    #print(tprs)
-    #plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC Fold %f (AUC = %0.2f)' % (i, roc_auc))
 
     
 plt.plot([0,1],[0,1],linestyle = '--',lw = 2,color = 'black')

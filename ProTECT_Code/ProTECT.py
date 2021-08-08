@@ -12,7 +12,6 @@ from scipy.cluster.hierarchy import linkage, fcluster
 from scipy.spatial.distance import squareform
 import matplotlib
 matplotlib.use('Agg')
-import pylab as plt
 from scipy import interp
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import roc_curve,auc
@@ -505,21 +504,13 @@ for i in range(len(test_list)):
     aucs.append(roc_auc)
     importance.append(clf.feature_importances_)
 
-    
-plt.plot([0,1],[0,1],linestyle = '--',lw = 2,color = 'black')
-mean_tpr = np.mean(tprs, axis=0)
-mean_auc = auc(mean_fpr, mean_tpr)
+
 #OutputImportance(feature_space, importance, output_file)
-plt.plot(mean_fpr, mean_tpr, color='red', label=r'Mean ROC (AUC = %0.2f )' % (mean_auc),lw=2, alpha=1)
-plt.xlabel('False Positive Rate')
-plt.ylabel('True Positive Rate')
-plt.title('ROC')
-plt.legend(loc='lower right',prop={'size': 6})
 fi = pd.DataFrame([feature_list.columns,np.mean(importance,axis=0)]).transpose()
 
 # train the model for later use.
 import pickle as pk
-
+mean_tpr = np.mean(tprs, axis=0)
 final_model = RandomForestClassifier(n_estimators=50)
 x, y  = np.array(feature_list), np.array(label_list)
 final_model.fit(x,y)

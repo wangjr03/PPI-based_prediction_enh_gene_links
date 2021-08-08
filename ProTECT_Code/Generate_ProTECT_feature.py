@@ -16,7 +16,8 @@
 -s: suffix of the output file name for version control.
 '''
 import sys
-sys.path.append('/mnt/ufs18/rs-027/compbio/wanglab/haowang/Proj6_3_layer_net/Targetfinder/targetfinder/myenv/lib/python3.7/site-packages/')
+# add targetfinder path here
+# example: sys.path.append('/mnt/ufs18/rs-027/compbio/Targetfinder/targetfinder/myenv/lib/python3.7/site-packages/')
 import argparse
 from scipy import interp
 from sklearn.ensemble import RandomForestClassifier

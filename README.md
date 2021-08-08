@@ -78,7 +78,7 @@ The ProTECT software consists of 6 sequential scripts. A detailed description of
 	| col | abbrv. | type | description |
 	| --- | --- | --- | --- |
 	| 1 | TF_name | string | Name of the TF |
-	| 2 | S_module.index | int | Module index for S-module |
+	| 2 | S-module.index | int | Module index for S-module |
 	| 3 | L-module.index | int | Module index for L-module |	
 
 	**Command line usage**: Rscript Discover_PPI_module.R `<path to the PPI data>` `<threshold of the confidence score>`

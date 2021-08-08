@@ -34,16 +34,18 @@ def Parser():
    parser.add_argument('-n', help = 'the path to the negative samples')
    parser.add_argument('-l', help = 'the path to the label list of the training samples')
    parser.add_argument('-o', help = 'output path of the trained model')
+   parser.add_argument('-s', help = 'suffix')
    return parser.parse_args()   
 
 args = Parser()
-
+print('successfully read parameters')
 labels = pd.read_csv(args.c,sep="\t",header=None)
+print(labels)
 all_TF_name = list(labels[0])
 labels_2 = list(labels[2])
 labels = list(labels[1])
 TF_name = all_TF_name
-
+print('Got datasets')
 
 # In[ ]:
 
@@ -63,7 +65,7 @@ for i in range(len(TF_name)):
 #binding_list = os.listdir("/mnt/gs18/scratch/users/wangha73/PPI_data/TF_peak_files_2/GM12878/")
 binding_list = os.listdir(args.t)
 
-binding_list = [f for f in binding_list if '.bed' in f]
+binding_list = [f for f in binding_list if '.txt' in f]
 
 TF_name = [f.split("_")[0] for f in binding_list]
 
@@ -99,7 +101,7 @@ for i in range(len(TF_name)):
 #binding_list = os.listdir("/mnt/gs18/scratch/users/wangha73/PPI_data/TF_peak_files_2/GM12878/")
 binding_list = os.listdir(args.t)
 
-binding_list = [f for f in binding_list if '.bed' in f]
+binding_list = [f for f in binding_list if '.txt' in f]
 
 TF_name = [f.split("_")[0] for f in binding_list]
 
@@ -260,7 +262,7 @@ data_split = 30
 # pos_pair = pd.read_csv("/mnt/ufs18/rs-027/compbio/wanglab/haowang/Proj6_3_layer_net/Targetfinder/targetfinder/ProTECT_GM/finalized/cross_domain_removed_pos_PPI0.txt",sep="\t",usecols = [0,1,2,3,4],header=None)
 # neg_pair = pd.read_csv("/mnt/ufs18/rs-027/compbio/wanglab/haowang/Proj6_3_layer_net/Targetfinder/targetfinder/ProTECT_GM/finalized/cross_domain_removed_neg_PPI0.txt",sep="\t",usecols = [0,1,2,3,4],header=None)
 
-pos_pair= pd.read_csv(args.p,sep="\t",usecols = [0,1,2,3,4])
+pos_pair= pd.read_csv(args.p,sep="\t",usecols = [0,1,2,3,4],header=None)
 neg_pair = pd.read_csv(args.n,sep="\t",usecols = [0,1,2,3,4],header=None)
 
 
@@ -273,7 +275,7 @@ all_pair.index = list(range(0,all_pair.shape[0]))
 all_pair = all_pair.sort_values(by=[0,1])
 
 all_pair.index = [list(range(0,all_pair.shape[0]))]
-
+print(all_pair)
 
 all_enh_list = np.array(all_pair.iloc[:,[0,1,2]])
     
@@ -391,10 +393,11 @@ def GDF(clf,n,x,y,frac):
     gdf = []
     for i in range(n):
         pt_loc,pt_y = perturb_data(pd.DataFrame(y),frac)
-        pt_score = clf.fit(x,pt_y).predict_proba(x)
+        y_flatten = pt_y.flatten()
+        pt_score = clf.fit(x,y_flatten).predict_proba(x)
         gdf_up = [pt_score[i][1] - lm[i][1] for i in pt_loc]
         gdf_down = [pt_y[i][0] - y[i][0] for i in pt_loc]
-        gdf.append(np.sum(gdf_up)/np.sum(gdf_down))
+        gdf.append(np.sum(gdf_up)/(1+np.sum(gdf_down)))
     return np.mean(gdf)
 
 def AIC(clf,x,y,frac,n):
@@ -512,7 +515,10 @@ importance = []
 mean_fpr = np.linspace(0,1,100)
 fi = []
 feature_list = new_feature_mat
-
+all_tpr = []
+all_fpr = []
+all_score = []
+all_test_id=[]
 for i in range(len(test_list)):
     #test_enh = get_test_set(count_dic,enh_idx,all_enh_list,0.2)
     #test_enh = [f for f in range(len(enh_idx)) if enh_idx[f] in test_enh]
@@ -534,10 +540,14 @@ for i in range(len(test_list)):
     fi.append(clf.feature_importances_)
     fpr, tpr, t = roc_curve(y[test_list[i]], prediction[:, 1])
     tprs.append(interp(mean_fpr, fpr, tpr))
+    all_score.extend(prediction[:,1])
+    all_test_id.extend(test_list[i])
+    #all_tpr.append(tpr)
+    #all_fpr.append(fpr)
     roc_auc = auc(fpr, tpr) 
     aucs.append(roc_auc)
     importance.append(clf.feature_importances_)
-    print(aucs)
+    #print(tprs)
     #plt.plot(fpr, tpr, lw=2, alpha=0.3, label='ROC Fold %f (AUC = %0.2f)' % (i, roc_auc))
 
     
@@ -558,4 +568,9 @@ import pickle as pk
 final_model = RandomForestClassifier(n_estimators=80)
 x, y  = np.array(feature_list), np.array(label_list)
 final_model.fit(x,y)
-pickle.dump(final_model, open(args.o, 'wb'))
+pk.dump(final_model, open(args.o+"/Protect_model_"+args.s+".sav", 'wb'))
+fi.to_csv(args.o+'/feature_importance_'+args.s+'.txt')
+df = pd.DataFrame(list(zip(all_test_id, all_score)),columns =['row_id', 'score'])
+df.to_csv(args.o+'/CV_scores_'+args.s+'.csv')
+np.save(args.o+'TPR_'+args.s,mean_tpr)
+np.save(args.o+'FPR_'+args.s,mean_fpr)

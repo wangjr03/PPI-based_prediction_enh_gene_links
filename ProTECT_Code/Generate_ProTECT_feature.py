@@ -36,12 +36,12 @@ def Parser():
    parser.add_argument('-o', help = 'the output path')
    parser.add_argument('-c', help = 'input the cell line key word here. add enhancer activity, gene activity and gene-enhancer correlation')
    parser.add_argument('-d', help = 'if add the distance feature or not', action = 'store_true')
-   parser.add_argument('-gene_annotation', help = 'gene_annotation_file', default = '/mnt/research/compbio/wanglab/data/Roadmap/genes/Gene_annotation.bed')
-   parser.add_argument('-gene_name', help = 'gene_name_file', default = '/mnt/research/compbio/wanglab/data/Roadmap/genes/RPKM_all_gene_name_select_2.bed')
-   parser.add_argument('-cell_name', help = 'cell_name_file', default = '/mnt/research/compbio/wanglab/data/Roadmap/Cell_types_RNAseq.bed')
-   parser.add_argument('-gene_activity', help = 'gene_activity_file', default = '/mnt/gs18/scratch/users/wangha73/PPI_data/Gene_activity_data/gene_activity_quantile_normalization.bed')
-   parser.add_argument('-enhancer_activity', help = 'enhancer_activity file', default = '/mnt/gs18/scratch/users/wangha73/PPI_data/Gene_activity_data/enhancer_activity_quantile_normalization.bed')
-   parser.add_argument('-enhancer_pos', help = 'enhancer_pos file', default = '/mnt/research/compbio/wanglab/data/Roadmap/enhancers/enhancer_coords_select.bed')
+   parser.add_argument('-gene_annotation', help = 'gene_annotation_file', default = '../data/Gene_annotation.bed')
+   parser.add_argument('-gene_name', help = 'gene_name_file', default = '../data/RPKM_all_gene_name_select_2.bed')
+   parser.add_argument('-cell_name', help = 'cell_name_file', default = '../data/Cell_types_RNAseq.bed')
+   parser.add_argument('-gene_activity', help = 'gene_activity_file', default = '../data/qt_norm_gene_exp.txt')
+   parser.add_argument('-enhancer_activity', help = 'enhancer_activity file', default = '../data/qt_norm_enh_exp.txt')
+   parser.add_argument('-enhancer_pos', help = 'enhancer_pos file', default = '../data/enhancer_coords_select.bed')
    parser.add_argument('-s', help = 'suffix', default = '')
    return parser.parse_args()   
 
@@ -163,11 +163,11 @@ def main():
    
    #output feature list
    f_l = pd.DataFrame(feature_list)
-   f_l.to_csv("feature_matrix"+args.s+".csv")
+   f_l.to_csv(args.o+"/feature_matrix"+args.s+".csv")
    l_l = pd.DataFrame(label_list)
-   l_l.to_csv('label_list'+args.s+'.csv')
-   pd.DataFrame(input_files).to_csv("input_file"+args.s+".csv")
-   pd.DataFrame(feature_space).to_csv('feature_name'+args.s+'.csv')
+   l_l.to_csv(args.o+'/label_list'+args.s+'.csv')
+   pd.DataFrame(input_files).to_csv(args.o+"/input_file"+args.s+".csv")
+   pd.DataFrame(feature_space).to_csv(args.o+'/feature_name'+args.s+'.csv')
 
 
 ############

@@ -1,4 +1,4 @@
-This folder contains the ProTECT predicted enhancer-promoter interactions in GM12878 and K562 based on distance-aware q-values. The predictions are sorted based on the starting sites of the enhancers.
+This folder contains the ProTECT predicted enhancer-promoter interactions in GM12878 and K562 (in hg19 and hg38) based on distance-aware q-values. The predictions are sorted based on the starting sites of the enhancers.
 The files have 11 columns:
 <br />1. Name of the chromosome.
 <br />2. Start of the enhancer.

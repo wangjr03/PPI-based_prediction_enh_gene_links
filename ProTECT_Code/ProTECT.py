@@ -462,7 +462,7 @@ test_list = []
 train_list = []
 
 
-for i in range(30):
+for i in range(data_split):
     test_enh = get_test_set(count_dic,enh_idx,all_enh_list,0.2)
     test_enh = [f for f in range(len(enh_idx)) if enh_idx[f] in test_enh]
     test_enh = np.array(u_enh_list.iloc[test_enh,:])

@@ -69,8 +69,11 @@ The ProTECT software consists of 6 sequential scripts. A detailed description of
 	**Inputs**: It takes TF ChIP-seq narrow peak files as inputs.<br>
 	**Outputs**: a feature matrix, where each row is one enhancer-promoter interaction and each column is one feature. <br>
 	**Command line usage**: python Generate_ProTECT_feature.py -i `<path to the training samples>` -c `<column index of the cell line in the gene/enhancer activity matrix, i.e. 53 for the GM12878 cell line>` -d `(indicates the genomic distance is reported)` -s `<path to the PPI file>`
-
-3. Discover_PPI_module.R: This step is used to detect a two-layer hierarchical PPI networks.<br>
+3. filter_based_on_ppi_score_remove_non_TFpairs.py: This step is used to remove PPIs with confidence scores lower than the user defined thresholds. <br>
+	**Inputs**: It takes STRING PPIs and output of the step 2 as inputs. <br>
+	**Outputs**: the PPI features passing the filter for enhancer-gene pairs<br>
+	**Command line usage**: python filter_based_on_ppi_score_remove_non_TFpairs.py -i `<path to the input file>` -o `<path to the output file>` -s `<the PPI score threshold>` -p `<path to the ppi file>`
+4. Discover_PPI_module.R: This step is used to detect a two-layer hierarchical PPI networks.<br>
 	**Inputs**: It takes the PPI data as the input.<br>
 	**Outputs**: Membership of the TFs to the hierarchical PPI module.<br>
 	
@@ -83,21 +86,21 @@ The ProTECT software consists of 6 sequential scripts. A detailed description of
 
 	**Command line usage**: Rscript Discover_PPI_module.R `<path to the PPI data>` `<threshold of the confidence score>`
 	
-4. ProTECT.py: This script is used to do feature dimension reduction and train a random forest model based on the generated feature.<br>
+5. ProTECT.py: This script is used to do feature dimension reduction and train a random forest model based on the generated feature.<br>
 	**Inputs**:  It takes the outputs of step 1,2,3 as the inputs.<br>
 	**Outputs**: a trained model stored in pickle format and a text summary of cross-validation results.<br>
 	**Command line usage**: python ProTECT.py -o `<output directory>`
 
-5. For genome-wide applications, users should provide the potential enhancer-promoter interactions. A recommended method is to use the bedtools window function. Following is an example: bedtools window -a <promoter annotation> -b <enhancer annotation> -w <maximum distance between the enhancer and the promoter> > <outputpath of potential enhancer-promoter interactions>. To generate the feature matrix based on individual TF-TF pairs on these potential pairs, we can repeat step 2 and the output is the desired feature matrix (raw feature matrix). 
+6. For genome-wide applications, users should provide the potential enhancer-promoter interactions. A recommended method is to use the bedtools window function. Following is an example: bedtools window -a <promoter annotation> -b <enhancer annotation> -w <maximum distance between the enhancer and the promoter> > <outputpath of potential enhancer-promoter interactions>. To generate the feature matrix based on individual TF-TF pairs on these potential pairs, we can repeat step 2 and the output is the desired feature matrix (raw feature matrix). 
 
-6. Reformat_feature_predict.py: This script uses the trained random forest model to predict significant enhancer-promoter interactions from the whole pool. This script has two major steps. The first step aims to reformat the TF-level PPI feature matrix generated in step 5 into the module-level PPI features defined by step 4. The second step takes the reformatted feature matrix as input and assigns a probability to each enhancer-promoter interaction using the training random forest model.<br>
+7. Reformat_feature_predict.py: This script uses the trained random forest model to predict significant enhancer-promoter interactions from the whole pool. This script has two major steps. The first step aims to reformat the TF-level PPI feature matrix generated in step 5 into the module-level PPI features defined by step 4. The second step takes the reformatted feature matrix as input and assigns a probability to each enhancer-promoter interaction using the training random forest model.<br>
 	**Inputs**: the TF-level PPI feature matrix generated in step 5.<br>
 	**Outputs**: the reformatted feature matrix defined by feature engineering procedures in step 4 and a file containing the predictive probability for each potential enhancer-promoter interaction.<br>
 	**Command line usage**: python Reformat_feature.py -i `<path to the raw feature matrix>`
 
-7. Reformat_feature_shuffle.py: This script is used to generate the null probability distribution for potential enhancer-promoter interactions. In this step, each feature is permuted randomly across all samples. The permuted features are then used as the input of the trained random forest model to generate the null probabilities. The input and usage are the same as step 6. 
+8. Reformat_feature_shuffle.py: This script is used to generate the null probability distribution for potential enhancer-promoter interactions. In this step, each feature is permuted randomly across all samples. The permuted features are then used as the input of the trained random forest model to generate the null probabilities. The input and usage are the same as step 6. 
 
-8. pFDR_procedure.R: This script uses the pFDR procedure to integrate the genomic distance information. The first step is to calculate a p-value for each enhancer-promoter interaction based on the predictive probability from step 6 and null predictive probabilities step 7. The second step is to calculate a q-value using the pFDR procedure based on the genomic distances and p-values.<br>
+9. pFDR_procedure.R: This script uses the pFDR procedure to integrate the genomic distance information. The first step is to calculate a p-value for each enhancer-promoter interaction based on the predictive probability from step 6 and null predictive probabilities step 7. The second step is to calculate a q-value using the pFDR procedure based on the genomic distances and p-values.<br>
 	**Inputs**: the result of step 6 and step 7.<br>
 	**Outputs**: A file containing q-values and statistically significant enhancer-promoter interactions given the q-value threshold.<br>
 	**Command line usage**: Rscript pFDR_procedure.R `<path to the predictive probability>` `<path to the null predictive probability> <q-value threshold>`

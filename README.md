@@ -60,7 +60,12 @@ For users’ convenience, four sets of data have been pre-calculated. The user c
 
 
 ## Description of scripts: command lines
-The ProTECT software consists of 6 sequential scripts. A detailed description of each piece is provided.
+### Train ProTECT with the provided training data
+Users can follow commandline below to train ProTECT with the provided training data. The result of the cross validation and a trained model will be generated. <br>
+	`python ProTECT.py -c "../data/hc_TF_community.txt" -t <path to the folder containing the TF ChIP-seq data with TF_name-ENCODE_ID.bed as file name> -fn ../data/GM12878_feature_names.csv -fm ../data/GM12878_training_matrix_DNase.txt -p ../data/GM12878_pos_sample_tf_overlapping.txt -n ../data/GM12878_neg_sample_tf_overlapping.txt -l ../data/GM12878_label_list.txt -o <output_path> -s <suffix>`
+
+### Generate your own data
+The ProTECT software consists of 9 sequential scripts. A detailed description of each piece is provided.
 1. Training_sample_generation.R: This step is used to generate positive training sets and a balanced negative training set with multiple confounding factors controlled.<br>
 	**Inputs**: It takes significant experimental chromatin interactions, contact domain annotations as inputs. <br>
 	**Outputs**: a list of enhancer-promoter interactions and their labels, i.e. 1 for positive sets and -1 for negative sets.<br>

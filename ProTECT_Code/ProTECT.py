@@ -520,7 +520,7 @@ fi = pd.DataFrame([feature_list.columns,np.mean(importance,axis=0)]).transpose()
 # train the model for later use.
 import pickle as pk
 
-final_model = RandomForestClassifier(n_estimators=80)
+final_model = RandomForestClassifier(n_estimators=50)
 x, y  = np.array(feature_list), np.array(label_list)
 final_model.fit(x,y)
 pk.dump(final_model, open(args.o+"/Protect_model_"+args.s+".sav", 'wb'))

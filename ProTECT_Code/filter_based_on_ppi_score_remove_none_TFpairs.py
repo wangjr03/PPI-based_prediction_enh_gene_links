@@ -17,8 +17,8 @@ def Parser():
    parser=argparse.ArgumentParser()
    parser.add_argument('-i', help = 'the input file')
    parser.add_argument('-o', help = 'the output file')
-   parser.add_argument('-s', help = 'the PPI score threshold', type = int, default = 0)
-   parser.add_argument('-p', help = 'the ppi file', default = './data/STRING_v11_PPI_score.txt')
+   parser.add_argument('-s', help = 'the PPI score threshold', type = int, default = 100)
+   parser.add_argument('-p', help = 'the ppi file')
    return parser.parse_args()
 
 

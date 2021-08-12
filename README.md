@@ -99,7 +99,7 @@ The ProTECT software consists of 9 sequential scripts. A detailed description of
 6. For genome-wide applications, users should provide the potential enhancer-promoter pairs. A recommended method is to use the bedtools window function. Following is an example: bedtools window -a <promoter annotation> -b <enhancer annotation> -w <maximum distance between the enhancer and the promoter> > <outputpath of potential enhancer-promoter interactions>. To generate the feature matrix based on individual TF-TF pairs on these potential pairs, we can repeat step 2 and the output is the desired feature matrix (raw feature matrix). 
 
 7. Reformat_feature_predict.py: This script uses the trained random forest model to predict significant enhancer-promoter interactions from the whole pool. This script has two major steps. The first step aims to reformat the TF-level PPI feature matrix generated in step 6 into the module-level PPI features defined by step 5. The second step takes the reformatted feature matrix as input and assigns a probability to each enhancer-promoter interaction using the trained random forest model.<br>
-	**Inputs**: the TF-level PPI feature matrix generated in step 6.<br>
+	**Inputs**: the TF-level PPI feature matrix generated in step 2 and 3.<br>
 	**Outputs**: the reformatted feature matrix defined by feature engineering procedures in step 5 and a file containing the predictive probability for each potential enhancer-promoter interaction.<br>
 	**Command line usage**: python Reformat_feature.py -i `<path to the raw feature matrix>`
 

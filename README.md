@@ -4,15 +4,15 @@ Predict long-range enhancer-promoter interactions based on PPIs.
 We developed ProTECT (i.e. PROtein-protein interactions of Transcription factors predicting Enhancer Contacts with Target genes) to predict long-range enhancer-promoter interactions using TF PPI as features. A robust random forest model is trained based on significant experimental chromatin interactions, i.e. Hi-C, and applied to the whole genome to make highly confident predictions.
 
 ## Introduction
-The ProTECT algorithm takes multi-omics data as inputs, including the enhancer activities, gene expressions, TF Chip-seq narrow peaks and PPIs, to train a random forest model. Novel community detection-based feature dimension reduction and feature selection methods are applied to reduce the number of features and improve the robustness and accuracy of the ProTECT. In the meanwhile, we evaluate the accuracy of the ProTECT with a rigorous genomic-bin split cross-validation method to remove the confounding factors. By applying the ProTECT algorithm on the potential enhancer-promoter interactions in the whole genome, a set of highly confident enhancer-promoter interactions is prioritized and used for the downstream analysis.
+The ProTECT algorithm takes multi-omics data as inputs, including the enhancer activities, gene expressions, TF ChIP-seq narrow peaks and PPIs, to train a random forest model. Novel network community-based feature dimension reduction and feature selection methods are applied to reduce the number of features and to improve the robustness and accuracy of ProTECT. In the meanwhile, we evaluate the accuracy of the ProTECT with a rigorous genomic-bin split cross-validation method to remove the confounding factors. By applying the ProTECT algorithm on the potential enhancer-promoter pairs in the whole genome, a set of highly confident enhancer-promoter interactions is prioritized and used for the downstream analysis.
 
 
 ## Dependencies
-The implementation of the ProTECT is based on `Python 3.6` and `R 3.5.1`. It depends on 6 Python packages (`scipy`, `scikit-learn`, `numpy`, `pandas`,`pickle` and `re`) and 2 R packages (`igraph` and `expm`). 
+The implementation of ProTECT is based on `Python 3.6` and `R 3.5.1`. It depends on 6 Python packages (`scipy`, `scikit-learn`, `numpy`, `pandas`,`pickle` and `re`) and 2 R packages (`igraph` and `expm`). 
 
 ## Input data: resources and formats
-We provided the well-formatted input training data in GM12878 and K562 (`data` directory). The training data are generated based on 8 sets of data: (1) significant experimental chromatin interactions, (2) contact domain annotations, (3) enhancer annotations, (4) gene annotations, (5) the enhancer activity profiles, (6) the gene activity profiles, (7) TF ChIP-seq peaks and (8) protein-protein interaction (PPI) datasets. For the convenience of the user,  enhancer annotations, gene annotations, the enhancer activity profiles and the gene activity profiles are pre-calculated and provided. Descriptions of the four required user-provided data are listed below:
-1. Significant experimental chromatin interactions: The significant experimental chromatin interactions can be provided by Hi-C , ChIA-PET  and Capture C. The chromatin interactions should be in a tab-separated file with five columns:
+We provided the well-formatted input training data in GM12878 and K562 (`data` directory). The training data are generated based on 8 sets of data: (1) significant experimental chromatin interactions, (2) chromatin contact domain annotations, (3) enhancer annotations, (4) gene annotations, (5) the enhancer activity profiles, (6) the gene activity profiles, (7) TF ChIP-seq peaks and (8) protein-protein interaction (PPI) datasets. For the convenience of the user,  enhancer annotations, gene annotations, the enhancer activity profiles and the gene activity profiles are pre-calculated and provided. Descriptions of the four required user-provided data are listed below:
+1. Significant experimental chromatin interactions: The significant experimental chromatin interactions can be provided by Hi-C , ChIA-PET  or Capture-C. The chromatin interactions should be in a tab-separated file with five columns:
 
 	| col | abbrv. | type | description |
 	| --- | --- | --- | --- |
@@ -32,7 +32,7 @@ We provided the well-formatted input training data in GM12878 and K562 (`data` d
 	| 2 | domain.start | int | Contact domain start 
 	| 3 | domain.end | int | Contact domain end 
 
-3. TF ChIP-seq peaks: The narrow peak files of TF ChIP-seq can be downloaded from the ENCODE consortia. As the quality control, we applied three criteria to filter the TF ChIP-seq narrow peak files. The TF ChIP-seq narrow peak files with the best quality are selected for each TF using the following three criteria:
+3. TF ChIP-seq peaks: The narrow peak files of TF ChIP-seq can be downloaded from the ENCODE consortium. As the quality control, we applied three criteria to filter the TF ChIP-seq narrow peak files. The TF ChIP-seq narrow peak files with the best quality are selected for each TF using the following three criteria:
 	a. TF ChIP-seq peak files for treated transcription factors are removed.
 	b. TF ChIP-seq peak files generated by paired-end experiments are preferred if available.
 	c. FRiP (Fraction of Reads in Peaks) score is calculated for each TF ChIP-seq replicate. The TF ChIP-seq peak file with the highest averaged FRiP score is selected.
@@ -55,13 +55,13 @@ For users’ convenience, four sets of data have been pre-calculated. The user c
 	| 8 | HGNC description | string | Description of the gene based on the HGNC annotation |
 	
 	
-2. Enhancer activity matrix: The enhancer activities are quantified by cell-type specific genome-wide coverage epigenomic datasets, i.e. histone modifications, DNase-seq and ATAC-seq. The cell-type specific enhancer activities are summarized into a matrix, where rows represent enhancers, and columns represent cell-types.
+2. Enhancer activity matrix: The enhancer activities are quantified by cell-type specific genome-wide coverage epigenomic datasets, i.e. histone modifications, DNase-seq or ATAC-seq. The cell-type specific enhancer activities are summarized into a matrix, where rows represent enhancers, and columns represent cell-types.
 3. Gene expression matrix: The gene expressions are quantified by RNA-seq data, i.e. RPKM. The cell-type specific gene expressions are summarized into a matrix, where rows represent genes, and columns represent cell-types.
 
 
 ## Description of scripts: command lines
 ### Train ProTECT with the provided training data
-Users can follow the command line below to train ProTECT with the provided training data. The result of the cross validation and a trained model will be generated. <br>
+Users can follow the command line below to train ProTECT with the provided training data. The result of the cross-validation and a trained model will be generated. <br>
 	`python ProTECT.py -c "../data/hc_TF_community.txt" -t <path to the folder containing the TF ChIP-seq data with TF_name-ENCODE_ID.bed as file name> -fn ../data/GM12878_feature_names.csv -fm ../data/GM12878_training_matrix_DNase.txt -p ../data/GM12878_pos_sample_tf_overlapping.txt -n ../data/GM12878_neg_sample_tf_overlapping.txt -l ../data/GM12878_label_list.txt -o <output_path> -s <suffix>`
 
 ### Generate your own data
@@ -96,9 +96,9 @@ The ProTECT software consists of 9 sequential scripts. A detailed description of
 	**Outputs**: a trained model stored in pickle format and a text summary of cross-validation results.<br>
 	**Command line usage**: python ProTECT.py -o `<output directory>`
 
-6. For genome-wide applications, users should provide the potential enhancer-promoter interactions. A recommended method is to use the bedtools window function. Following is an example: bedtools window -a <promoter annotation> -b <enhancer annotation> -w <maximum distance between the enhancer and the promoter> > <outputpath of potential enhancer-promoter interactions>. To generate the feature matrix based on individual TF-TF pairs on these potential pairs, we can repeat step 2 and the output is the desired feature matrix (raw feature matrix). 
+6. For genome-wide applications, users should provide the potential enhancer-promoter pairs. A recommended method is to use the bedtools window function. Following is an example: bedtools window -a <promoter annotation> -b <enhancer annotation> -w <maximum distance between the enhancer and the promoter> > <outputpath of potential enhancer-promoter interactions>. To generate the feature matrix based on individual TF-TF pairs on these potential pairs, we can repeat step 2 and the output is the desired feature matrix (raw feature matrix). 
 
-7. Reformat_feature_predict.py: This script uses the trained random forest model to predict significant enhancer-promoter interactions from the whole pool. This script has two major steps. The first step aims to reformat the TF-level PPI feature matrix generated in step 5 into the module-level PPI features defined by step 4. The second step takes the reformatted feature matrix as input and assigns a probability to each enhancer-promoter interaction using the training random forest model.<br>
+7. Reformat_feature_predict.py: This script uses the trained random forest model to predict significant enhancer-promoter interactions from the whole pool. This script has two major steps. The first step aims to reformat the TF-level PPI feature matrix generated in step 5 into the module-level PPI features defined by step 4. The second step takes the reformatted feature matrix as input and assigns a probability to each enhancer-promoter interaction using the trained random forest model.<br>
 	**Inputs**: the TF-level PPI feature matrix generated in step 5.<br>
 	**Outputs**: the reformatted feature matrix defined by feature engineering procedures in step 4 and a file containing the predictive probability for each potential enhancer-promoter interaction.<br>
 	**Command line usage**: python Reformat_feature.py -i `<path to the raw feature matrix>`

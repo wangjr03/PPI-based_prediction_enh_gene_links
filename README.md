@@ -18,7 +18,7 @@ We provided the well-formatted input training data in GM12878 and K562 (`data` d
 	| --- | --- | --- | --- |
 	| 1 | chr | string | Name of the chromosome |
 	| 2 | frag1.start | int | Fragment 1 start |
-	| 3 | frag1.enh | int | Fragment 1 enh |
+	| 3 | frag1.end | int | Fragment 1 end |
 	| 4 | frag2.start | int | Fragment 2 start |
 	| 5 | frag2.end | int |Fragment 2 end |
 

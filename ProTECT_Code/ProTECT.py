@@ -1,8 +1,3 @@
-
-
-
-
-
 import argparse
 import pandas as pd
 import numpy as np
@@ -54,7 +49,6 @@ print('Got datasets')
 cluster = {}
 
 for i in range(len(TF_name)):
-    
     cluster[TF_name[i]] = labels[i]
     
 
@@ -62,7 +56,7 @@ for i in range(len(TF_name)):
     
     
 #for those not in the cluster, add them:
-#binding_list = os.listdir("/mnt/gs18/scratch/users/wangha73/PPI_data/TF_peak_files_2/GM12878/")
+
 binding_list = os.listdir(args.t)
 
 binding_list = [f for f in binding_list if '.txt' in f]
@@ -98,7 +92,6 @@ for i in range(len(TF_name)):
     
     
 #for those not in the cluster, add them:
-#binding_list = os.listdir("/mnt/gs18/scratch/users/wangha73/PPI_data/TF_peak_files_2/GM12878/")
 binding_list = os.listdir(args.t)
 
 binding_list = [f for f in binding_list if '.txt' in f]
@@ -124,11 +117,17 @@ for i in TF_name:
 
 #modify features: cluster TFs based on clusters
 
-feature_name = pd.read_csv(args.fn)
-feature_name=feature_name.drop('Unnamed: 0',axis=1)
+feature_name = pd.read_csv(args.fn,sep=None)
+n_feature = len(feature_name.columns)-1
+feature_name.drop(columns=feature_name.columns[0:n_feature], 
+        axis=1, 
+        inplace=True)
 
-feature_matrix = pd.read_csv(args.fm)
-feature_matrix=feature_matrix.drop('Unnamed: 0',axis=1)
+feature_matrix = pd.read_csv(args.fm,sep=None)
+
+feature_matrix.drop(columns=feature_matrix.columns[0], 
+        axis=1, 
+        inplace=True)
 
 TF_feature = [f for f in feature_name.iloc[:,0] if ',' in f]
 
@@ -158,8 +157,7 @@ for i in col_dic:
     tmp_col = col_dic[i]
     new_feature = feature_matrix.iloc[:,tmp_col].sum(axis=1)
     new_feature_mat = pd.concat([new_feature_mat,1*(new_feature>0)],axis=1)
-    #new_feature_mat = pd.concat([new_feature_mat,new_feature/new_feature.sum()],axis=1)
-
+    
 new_feature_mat = pd.concat([new_feature_mat,feature_matrix.iloc[:,len(TF_feature):]],axis=1)
 
 a = list(col_dic.keys())
@@ -175,15 +173,6 @@ for i in a:
         sel_col.append(i)
 
 
-        
-        
-        
-        
-        
-        
-        
-
-
 mapping = pd.read_csv(args.c,sep="\t")
 
 m_dic = {}
@@ -191,25 +180,13 @@ m_dic = {}
 for i in range(mapping.shape[0]):
     m_dic[mapping.iloc[i,0]] = mapping.iloc[i,1]
 
-
-
-    
-    
-    
-    
-    
+  
 within_cluster_feature = pd.DataFrame()
 
 for i in new_feature_mat.columns:
     if i[0] in m_dic and i[1] in m_dic and m_dic[i[0]] == m_dic[i[1]]:
              within_cluster_feature = pd.concat([within_cluster_feature,new_feature_mat[i]],axis=1)
-            
-
-
-            
-            
-            
-#within_cluster_feature = pd.concat([within_cluster_feature,new_feature_mat[['gene_activity','enhancer_activity','enhancer-gene_core','distance']]],axis=1)            
+                   
 cluster_idx = []
 
 for i in TF_feature:
